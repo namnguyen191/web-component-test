@@ -18,20 +18,6 @@
     </style>
   </head>
   <body>
-    <nn-modal>
-      <h1 slot="title">Hey Please Confirm</h1>
-      <p>With your confirmation you agree to pay the full amount!</p>
-    </nn-modal>
-    <p>Please confirm your choice</p>
-    <button>Show detail & confirm</button>
-
-    <script>
-      const confirmButton = document.querySelector('button');
-      const modal = document.querySelector('nn-modal');
-      confirmButton.addEventListener('click', () => {
-        // modal.setAttribute('opened', '');
-        modal.open();
-      });
-    </script>
+    <nn-modal title="My Custom Title" message="I want noodle"> </nn-modal>
   </body>
 </html>
