@@ -1,4 +1,4 @@
-class Modal extends HTMLElement {
+class NamNguyenUniqueModal extends HTMLElement {
   constructor() {
     super();
     this._title = 'Default Title';
@@ -134,4 +134,4 @@ class Modal extends HTMLElement {
   }
 }
 
-customElements.define('nn-modal', Modal);
+customElements.define('nn-modal', NamNguyenUniqueModal);
