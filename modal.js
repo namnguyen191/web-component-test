@@ -5,6 +5,12 @@ class NamNguyenUniqueModal extends HTMLElement {
     this._message =
       'This is the default message show when displaying the modal';
     this.attachShadow({ mode: 'open' });
+    this.render();
+
+    // const slots = this.shadowRoot.querySelectorAll('slot');
+    // slots[0].addEventListener('slotchange', (event) => {
+    //   console.log('he');
+    // });
   }
 
   connectedCallback() {
@@ -40,6 +46,20 @@ class NamNguyenUniqueModal extends HTMLElement {
     this.removeAttribute('opened');
   }
 
+  _cancel(event) {
+    this.close();
+    const cancelEvent = new Event('cancel', { bubbles: true, composed: true });
+    event.target.dispatchEvent(cancelEvent);
+  }
+
+  _confirm() {
+    this.close();
+
+    const confirmEvent = new Event('confirm');
+
+    this.dispatchEvent(confirmEvent);
+  }
+
   render() {
     this.shadowRoot.innerHTML = `
       <style>
@@ -57,7 +77,7 @@ class NamNguyenUniqueModal extends HTMLElement {
 
         #modal {
           position: fixed;
-          top: 15vh;
+          top: 10vh;
           left: 25%;
           width: 50%;
           z-index: 100;
@@ -69,6 +89,7 @@ class NamNguyenUniqueModal extends HTMLElement {
           gap: 2rem;
           opacity: 0;
           pointer-events: none;
+          transition: all 0.3s ease-out
         }
 
         :host([opened]) #backdrop,
@@ -76,6 +97,10 @@ class NamNguyenUniqueModal extends HTMLElement {
         {
           opacity: 1;
           pointer-events: all;
+        }
+
+        :host([opened]) #modal {
+          top: 15vh;
         }
 
         #main {
@@ -108,8 +133,8 @@ class NamNguyenUniqueModal extends HTMLElement {
       <div>
         <p>Please confirm your choice</p>
         <button id="triggerButton">Show detail & confirm</button>
-        <div id="backdrop">
-          <div id="modal">
+        <div id="backdrop"></div>
+        <div id="modal">
             <header>
               <slot name="title"><h1>${this._title}</h1></slot>
             </header>
@@ -121,16 +146,20 @@ class NamNguyenUniqueModal extends HTMLElement {
               <button id="confirmButton">Confirm</button>
             </section>
           </div>
-        </div>
       </div>
     `;
 
     let cancelButton = this.shadowRoot.querySelector('#cancelButton');
-    cancelButton.addEventListener('click', this.close.bind(this));
+    cancelButton.addEventListener('click', this._cancel.bind(this));
+    cancelButton.addEventListener('cancel', () => {
+      console.log('cancel');
+    });
     let confirmButton = this.shadowRoot.querySelector('#confirmButton');
-    confirmButton.addEventListener('click', this.close.bind(this));
+    confirmButton.addEventListener('click', this._confirm.bind(this));
     let triggerButton = this.shadowRoot.querySelector('#triggerButton');
     triggerButton.addEventListener('click', this.open.bind(this));
+    let backdrop = this.shadowRoot.querySelector('#backdrop');
+    backdrop.addEventListener('click', this._cancel.bind(this));
   }
 }
 

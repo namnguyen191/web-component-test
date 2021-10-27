@@ -18,6 +18,19 @@
     </style>
   </head>
   <body>
-    <nn-modal title="My Custom Title" message="I want noodle"> </nn-modal>
+    <nn-modal>
+      <h1 slot="title">Hey Please Confirm</h1>
+      <p>With your confirmation you agree to pay the full amount!</p>
+    </nn-modal>
+
+    <script>
+      const modal = document.querySelector('nn-modal');
+      modal.addEventListener('cancel', () => {
+        console.log('modal cancelled');
+      });
+      modal.addEventListener('confirm', () => {
+        console.log('modal confirmed');
+      });
+    </script>
   </body>
 </html>
